@@ -158,11 +158,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   g_speed: 0
   g_upspeed: 1
+  g_kunai_dis: 0
   g_anim: {fileID: 0}
   isJumpPressed: 0
   canJump: 0
   isAttack: 0
   g_atkCollider: {fileID: 1053041757}
+  g_kunai: {fileID: 189243371408277422, guid: 99b75541578083d42bb527f35b6d19f0, type: 3}
 --- !u!95 &111679908
 Animator:
   serializedVersion: 5
@@ -224,7 +226,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 50
   m_Sprite: {fileID: 21300000, guid: 3c1b633554892e04baba122a77bf9034, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -250,6 +252,7 @@ Transform:
   m_Children:
   - {fileID: 958949439}
   - {fileID: 1053041759}
+  - {fileID: 599293626}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -270,7 +273,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.928, y: 1.756}
+    oldSize: {x: 1.508, y: 1.804}
     newSize: {x: 2.32, y: 4.39}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -606,6 +609,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &599293625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 599293626}
+  m_Layer: 0
+  m_Name: Kunai Pos
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &599293626
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599293625}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.849, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 111679910}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &958949438
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,7 +682,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 958949438}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ce6ad17162f26a24a8840f1dc1833b78, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
