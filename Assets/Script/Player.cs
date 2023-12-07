@@ -17,7 +17,10 @@ public class Player : MonoBehaviour
 
     [HideInInspector] 
     public bool isJumpPressed, //按下跳按鈕
-                canJump;  //可以跳
+                canJump,       //可以跳
+                isAttack;      //按下攻擊按鈕
+
+    public GameObject g_atkCollider;
 
     //程式執行第一個被CALL的函式
     void Awake() {
@@ -30,6 +33,7 @@ public class Player : MonoBehaviour
 
         isJumpPressed = false;
         canJump       = true;
+        isAttack      = false;
     }
     
     //判斷按鈕有沒按 不適合放在FixedUpdate
@@ -38,6 +42,13 @@ public class Player : MonoBehaviour
         {
             isJumpPressed = true;  //按下空白鍵, 跳 
             canJump       = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+           g_anim.SetTrigger("Attack"); //按下P鍵, 攻擊 
+           isAttack = true;
+           canJump  = false;  // 攻擊的時候不能跳
         }
     }
    
@@ -52,6 +63,12 @@ public class Player : MonoBehaviour
         //上下移動
         //按W為0.0~1.0; 按S為0.0~-1.0 
         // float Input_Y = Input.GetAxisRaw("Vertical");
+
+        if (isAttack)
+        {
+            Input_X = 0;  //攻擊時不移動
+            
+        }
 
         //根據移動方向決定腳色面向
         if(Input_X < 0){
@@ -113,6 +130,23 @@ public class Player : MonoBehaviour
 
         g_rb.velocity = new Vector2(Input_X * g_speed, g_rb.velocity.y);
         
+    }
+
+    //要在受傷的第一個Frame呼叫這個函式, 腳色才能正常移動 
+    public void SetIsAttackFalse(){
+        isAttack   = false;  //讓玩家攻擊完以後可以移動
+        canJump    = true;   //讓玩家攻擊完以後可以跳
+        g_anim.ResetTrigger("Attack");  //避免攻擊還沒結束就重複trigger
+    }
+
+    //啟動Attack Collider
+    public void SetAttackColliderOn(){
+        g_atkCollider.SetActive(true);
+    }
+
+     //關閉Attack Collider
+    public void SetAttackColliderOff(){
+        g_atkCollider.SetActive(false);
     }
 
     //判斷玩家是否碰到地板
