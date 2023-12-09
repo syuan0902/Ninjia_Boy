@@ -30,7 +30,7 @@ public class Kunai : MonoBehaviour
         g_speed = 10.0f; //飛鏢速度
         g_live  = 2.0f;  //飛鏢壽命
 
-        target = "Ground";
+        target = "Enemy";
 
         //透過玩家的面向 決定飛鏢的轉動角度
         if (g_player.transform.localScale.x == 1.0f) {
@@ -67,6 +67,11 @@ public class Kunai : MonoBehaviour
         {
             Destroy(other.gameObject); //摧毀目標
             Destroy(gameObject);       //摧毀自己
-        }           
+        }
+
+        if (other.tag == "Ground")
+        {
+            Destroy(gameObject);       //摧毀自己
+        }         
     }
 }

@@ -9,7 +9,7 @@ public class AttackCollider : MonoBehaviour
    String target; //Trigger的目標
 
    void Awake() {
-      target = "Ground";   
+      target = "Enemy";   
    }
 
    void OnTriggerEnter2D(Collider2D other) {
