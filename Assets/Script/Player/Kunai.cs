@@ -10,7 +10,7 @@ public class Kunai : MonoBehaviour
 
     float g_live; //飛鏢壽命
 
-    String target; //Trigger的目標
+    //String target; //Trigger的目標
 
     public float g_speed;    //飛鏢速度
           //g_kunai_dir; //飛鏢方向
@@ -30,7 +30,7 @@ public class Kunai : MonoBehaviour
         g_speed = 10.0f; //飛鏢速度
         g_live  = 2.0f;  //飛鏢壽命
 
-        target = "Enemy";
+        //target = "Enemy";
 
         //透過玩家的面向 決定飛鏢的轉動角度
         if (g_player.transform.localScale.x == 1.0f) {
@@ -63,15 +63,21 @@ public class Kunai : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
 
-        if (other.tag == target)
+        //飛鏢碰到停止點之外的物件, 就消失
+        if (other.tag != "StopPoint")
         {
-            Destroy(other.gameObject); //摧毀目標
             Destroy(gameObject);       //摧毀自己
         }
 
-        if (other.tag == "Ground")
-        {
-            Destroy(gameObject);       //摧毀自己
-        }         
+        // if (other.tag == "Enemy")
+        // {
+        //     Destroy(other.gameObject); //摧毀目標
+        //     Destroy(gameObject);       //摧毀自己
+        // }
+
+        // if (other.tag == "Ground")
+        // {
+        //     Destroy(gameObject);       //摧毀自己
+        // }         
     }
 }

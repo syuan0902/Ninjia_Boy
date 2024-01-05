@@ -6,17 +6,17 @@ using UnityEngine;
 public class AttackCollider : MonoBehaviour
 {
  
-   String target; //Trigger的目標
+   //String target; //Trigger的目標
 
    void Awake() {
-      target = "Enemy";   
+      //target = "Enemy";   
    }
 
-   void OnTriggerEnter2D(Collider2D other) {
+   // void OnTriggerEnter2D(Collider2D other) {
 
-    if (other.tag == target)
-    {
-         Destroy(other.gameObject);
-    }   
-   }
+   //  if (other.tag == "Enemy")
+   //  {
+   //       Destroy(other.gameObject);
+   //  }   
+   // }
 }

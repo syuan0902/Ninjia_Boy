@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Enemy
+  - PlayerAttack
+  - Item
+  - StopPoint
   layers:
   - Default
   - TransparentFX
@@ -15,9 +18,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - EnemyAttack
+  - PlayerAttack
+  - BoundCamera
   - 
   - 
   - 

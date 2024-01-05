@@ -8,12 +8,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    String target; //敵人
+    //String target; //敵人
 
     public float g_speed,     //左右移動速度
                  g_upspeed,   //向上移動速度
                  g_kunai_dis; //飛鏢距離 
-           float g_dir; //腳色面向
+           //float g_dir; //腳色面向
     //public Vector3 g_kunaiPos;   //飛鏢位置
                  
     public int g_playerHealth; //腳色生命值
@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
     Rigidbody2D g_rb; //鋼體元件
     SpriteRenderer g_renderer;
 
+    AudioSource g_audio;
+    
+    public AudioClip[] g_audioClip;
+
 
 
    // [HideInInspector] 
@@ -32,7 +36,8 @@ public class Player : MonoBehaviour
                 isAttack,      //按下攻擊 or 投擲按鈕
                 isHurt,        //受傷            
                 canHurt;      //可以被攻擊
-
+    
+    //運行時才賦值
     public GameObject g_atkCollider,
                       g_kunai;   //飛鏢物件
                       //g_kunaiPos;   //飛鏢位置
@@ -44,9 +49,10 @@ public class Player : MonoBehaviour
         g_anim     = GetComponent<Animator>();
         g_rb       = GetComponent<Rigidbody2D>();
         g_renderer = GetComponent<SpriteRenderer>();
+        g_audio    = GetComponent<AudioSource>(); //音效  
 
-        g_speed   = 5.0f;
-        g_upspeed = 20.0f ;
+        //g_speed   = 5.0f;
+        //g_upspeed = 20.0f ;
 
         isJumpPressed = false;
         canJump       = true;
@@ -54,8 +60,7 @@ public class Player : MonoBehaviour
         isHurt        = false; //沒受傷
         canHurt       = true;  //可以被攻擊
 
-        target = "Enemy";
-        g_playerHealth = 5;
+        //target = "Enemy";
         
     }
     
@@ -69,17 +74,21 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P) && !isHurt) {
            g_anim.SetTrigger("Attack"); //按下P鍵, 攻擊 
+           
            isAttack = true;
            canJump  = false;  // 攻擊的時候不能跳
         }
 
         if (Input.GetKeyDown(KeyCode.O) && !isHurt) {
-           g_anim.SetTrigger("Throw"); //按下P鍵, 攻擊 
+           g_anim.SetTrigger("Throw"); //按下O鍵, 攻擊 
+          
            isAttack = true;
            canJump  = false;          // 投擲的時候不能跳
         }
 
     }
+
+
    
     // 使用鋼體移動要搭配Fixed Update
     void FixedUpdate() {
@@ -104,10 +113,10 @@ public class Player : MonoBehaviour
         if (Input_X > 0)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
-            g_dir = 1.0f;
+            //g_dir = 1.0f;
         } else if(Input_X < 0) {
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            g_dir = -1.0f;
+            //g_dir = -1.0f;
         }
 
 
@@ -167,6 +176,17 @@ public class Player : MonoBehaviour
         
     }
 
+    //揮劍音效
+    public void PlayerSwordEffect(){
+        g_audio.PlayOneShot(g_audioClip[0]);
+            
+    }
+
+    //飛鏢音效
+    public void PlayerKunaiEffect(){
+        g_audio.PlayOneShot(g_audioClip[1]);
+    }
+
     //*****************************************************************
     //這邊有bug 攻擊完或投擲完 可以不碰地板就往上跳...
     //*****************************************************************
@@ -215,13 +235,12 @@ public class Player : MonoBehaviour
     public void SpawnKunai() {
 
         //用腳色面向決定飛鏢方向
-        g_kunai_dis = g_dir;
-        // if (transform.localScale.x == 1.0f) { //向右
-        //      g_kunai_dis = 1.0f;
+        if (transform.localScale.x == 1.0f) { //向右
+             g_kunai_dis = 1.0f;
             
-        // } else if (transform.localScale.x == -1.0f) { //向左
-        //         g_kunai_dis = -1.0f;
-        // }
+        } else if (transform.localScale.x == -1.0f) { //向左
+                g_kunai_dis = -1.0f;
+        }
 
         //****************************************************************************************
         // 教學是用玩家位置 加上固定距離 決定飛鏢的位置
@@ -235,11 +254,21 @@ public class Player : MonoBehaviour
         Instantiate(g_kunai, l_pos, Quaternion.identity);
         
     }
+
+     //碰到底部邊界時 -> 主角死亡
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.collider.name == "Bottom")
+        {
+            Player_Die();
+        }
+    }
    
     //被敵人攻擊
     void OnTriggerEnter2D(Collider2D other) {
 
-         if (other.tag == target && !isHurt && canHurt) {
+         if (other.tag == "Enemy" && !isHurt && canHurt) {
+
+            g_playerHealth --;  //腳色損血
 
             if (g_playerHealth >= 1) { //腳色受傷
 
@@ -252,12 +281,22 @@ public class Player : MonoBehaviour
                 Player_Die();
             }     
         } 
+
+        //檢物品
+        if (other.tag == "Item"){
+            //播放檢物品音效
+            g_audio.PlayOneShot(g_audioClip[3]);
+            Destroy(other.gameObject);
+        }
+       
     }
 
     //持續和敵人接觸時
     void OnTriggerStay2D(Collider2D other) {
 
-         if (other.tag == target && !isHurt && canHurt) {
+         if (other.tag == "Enemy" && !isHurt && canHurt) {
+
+            g_playerHealth --;  //腳色損血
 
             if (g_playerHealth >= 1) { //腳色受傷
 
@@ -274,7 +313,8 @@ public class Player : MonoBehaviour
 
     void Player_Hurt() {  //腳色受傷
 
-            g_playerHealth --;  //腳色損血
+            g_audio.PlayOneShot(g_audioClip[2]);
+
             isHurt =  true;     //受傷中
             canHurt = false;    //不能被攻擊
             g_anim.SetBool("Hurt", true);  //受傷動畫
@@ -297,6 +337,9 @@ public class Player : MonoBehaviour
     }
 
     void Player_Die(){  //腳色死亡
+
+        g_audio.PlayOneShot(g_audioClip[4]);
+        g_playerHealth = 0;
 
         isHurt   = true; //死亡後不能移動或攻擊
         isAttack = true; //讓腳色不改變面向
