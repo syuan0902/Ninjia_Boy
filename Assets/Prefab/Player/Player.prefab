@@ -127,7 +127,7 @@ MonoBehaviour:
   g_speed: 5
   g_upspeed: 20
   g_kunai_dis: 0
-  g_playerHealth: 3
+  g_playerHealth: 10
   g_anim: {fileID: 0}
   g_audioClip:
   - {fileID: 8300000, guid: f1106f04e68f1df43ae506a868e66b8e, type: 3}

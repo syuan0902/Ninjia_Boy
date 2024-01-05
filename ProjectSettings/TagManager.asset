@@ -9,6 +9,7 @@ TagManager:
   - PlayerAttack
   - Item
   - StopPoint
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
